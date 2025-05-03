@@ -18,11 +18,13 @@ class MailOpenController extends Controller
     public function __invoke($id)
     {
 
-        MailLog::find($id) && MailLog::find($id)->update([
-            'is_seen' => true,
-        ]);
-        MailSeen::dispatch($id);
-        Log::info('seen');
+        if (MailLog::find($id)) {
+            MailLog::find($id)->update([
+                'is_seen' => true,
+            ]);
+            MailSeen::dispatch($id);
+        }
+
         $pixel = base64_decode(
             'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII='
         );
