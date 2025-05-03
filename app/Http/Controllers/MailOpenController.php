@@ -22,7 +22,7 @@ class MailOpenController extends Controller
             'is_seen' => true,
         ]);
         MailSeen::dispatch($id);
-
+        Log::info('seen');
         $pixel = base64_decode(
             'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII='
         );
