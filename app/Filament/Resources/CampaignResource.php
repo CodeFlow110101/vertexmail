@@ -62,7 +62,7 @@ class CampaignResource extends Resource
                 TextColumn::make('attachment.name'),
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
