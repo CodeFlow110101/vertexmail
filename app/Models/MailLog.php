@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\MailCreated;
+use App\Events\MailSeen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -23,5 +24,6 @@ class MailLog extends Model
 
     protected $dispatchesEvents = [
         'created' => MailCreated::class,
+        'updated'=> MailSeen::class,
     ];
 }

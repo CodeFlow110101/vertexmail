@@ -6,14 +6,11 @@ use App\Models\MailLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
-class LeadMail extends Mailable
+class MailSeen extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,11 +18,11 @@ class LeadMail extends Mailable
      * Create a new message instance.
      */
 
-    protected $maillog;
+    protected $lead_mail;
 
     public function __construct($maillog)
     {
-        $this->maillog = MailLog::find($maillog);
+        $this->lead_mail =  MailLog::find($maillog)->lead->email;
     }
 
     /**
@@ -34,7 +31,7 @@ class LeadMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->maillog->campaign->subject,
+            subject: 'Mail Seen',
         );
     }
 
@@ -44,10 +41,9 @@ class LeadMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.lead-mail',
+            view: 'mails.mail-seen',
             with: [
-                'template' => $this->maillog->campaign->template,
-                'id' => $this->maillog->id
+                'lead_mail' => $this->lead_mail,
             ],
         );
     }
@@ -59,10 +55,6 @@ class LeadMail extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromStorageDisk('public', $this->maillog->campaign->attachment->path)
-                ->as($this->maillog->campaign->attachment->name)
-                ->withMime('application/pdf'),
-        ];
+        return [];
     }
 }

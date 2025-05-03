@@ -10,19 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MailCreated
+class MailSeen
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
+    public $maillog;
 
-    public $mail;
-
-    public function __construct($mail)
+    public function __construct($maillog)
     {
-        $this->mail = $mail->id;
+        $this->maillog = $maillog;
     }
 
     /**
