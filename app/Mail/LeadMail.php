@@ -59,10 +59,6 @@ class LeadMail extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromStorageDisk('public', $this->maillog->campaign->attachment->path)
-                ->as($this->maillog->campaign->attachment->name)
-                ->withMime('application/pdf'),
-        ];
+        return $this->maillog->campaign->attachment ? [Attachment::fromStorageDisk('public', $this->maillog->campaign->attachment->path)->as($this->maillog->campaign->attachment->name)->withMime('application/pdf')] : [];
     }
 }

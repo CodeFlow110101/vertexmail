@@ -35,18 +35,18 @@ class CampaignResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required()->placeholder('Name'),
-                TextInput::make('subject')->live()->required()->placeholder('Subject'),
-                RichEditor::make('template')->live()->required()->columnSpan(2),
+                TextInput::make('subject')->live()->required()->placeholder('Subject')->columnSpanFull(),
+                RichEditor::make('template')->live()->required()->columnSpanFull(2),
                 Select::make('attachment_id')
                     ->label('Attachment')
                     ->options(Attachment::all()->pluck('name', 'id'))
-                    ->searchable()->required()->columnSpanFull(),
+                    ->searchable()->columnSpanFull(),
                 Textarea::make('emails')->live()->afterStateUpdated(function (Set $set, $state) {
                     $set(
                         'emails_preview',
                         collect(explode(',', $state))->map(fn($email) => trim($email))->unique()->filter(fn($email) => preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email))->map(fn($email) => ['email' => $email])->all()
                     );
-                })->columnSpan(2),
+                })->columnSpanFull(),
                 Section::make('Emails Retrived')->schema([
                     Repeater::make('emails_preview')->simple(TextInput::make('email')->readOnly())->addable(false)->deletable(false)->reorderable(false)->defaultItems(0)->grid(2)->label('')->required()->validationAttribute('Email(s)')
                 ])
