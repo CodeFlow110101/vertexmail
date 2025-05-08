@@ -19,10 +19,11 @@ class MailOpenController extends Controller
     {
 
         if (MailLog::find($id)) {
-            MailLog::find($id)->update([
+            $maillog = MailLog::find($id);
+            $maillog->is_seen || MailSeen::dispatch($id);
+            $maillog->update([
                 'is_seen' => true,
             ]);
-            MailSeen::dispatch($id);
         }
 
         $pixel = base64_decode(
